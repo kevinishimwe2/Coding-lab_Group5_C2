@@ -7,7 +7,7 @@ echo "2) Temperature"
 echo "3) Water Usage"
 read -p "Enter choice (1-3): " choice
 
-# input and their validations
+# Input and their validations
 if [[ ! "$choice" =~ ^[1-3]$ ]]; then
     echo "Error: Invalid choice. Please enter 1, 2, or 3."
     exit 1
@@ -35,7 +35,7 @@ case $choice in
         ;;
 esac
 
-# file existance checking
+# File existance checking
 if [ ! -f "$log_file" ]; then
     echo "Error: Log file $log_file not found."
     exit 1
@@ -73,4 +73,4 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "Successfully archived to $archive_file"
+echo "Archived to $archive_file successfully"
