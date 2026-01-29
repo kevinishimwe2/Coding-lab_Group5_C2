@@ -1,19 +1,19 @@
 #!/bin/bash
 
-# Display menu
+# Showing our menu page
 echo "Select log to archive:"
 echo "1) Heart Rate"
 echo "2) Temperature"
 echo "3) Water Usage"
 read -p "Enter choice (1-3): " choice
 
-# Validate input
+# input and their validations
 if [[ ! "$choice" =~ ^[1-3]$ ]]; then
     echo "Error: Invalid choice. Please enter 1, 2, or 3."
     exit 1
 fi
 
-# Set variables based on choice
+# Space for making validation based on choice made
 case $choice in
     1)
         log_name="heart_rate"
@@ -35,29 +35,29 @@ case $choice in
         ;;
 esac
 
-# Check if log file exists
+# file existance checking
 if [ ! -f "$log_file" ]; then
     echo "Error: Log file $log_file not found."
     exit 1
 fi
 
-# Check if archive directory exists
+# archive directory checking if exists
 if [ ! -d "$archive_dir" ]; then
     echo "Error: Archive directory $archive_dir does not exist."
     exit 1
 fi
 
-# Generate timestamp
+# timestamp making
 timestamp=$(date +"%Y-%m-%d_%H:%M:%S")
 
-# Archive filename
+# filename archiving
 archive_file="${archive_dir}/${log_name}_${timestamp}.log"
 
-# Archive the log
+# log archiving
 echo ""
 echo "Archiving ${log_name}.log..."
 
-# Move the log file to archive
+# Moving log files to archive
 mv "$log_file" "$archive_file"
 
 if [ $? -ne 0 ]; then
@@ -65,7 +65,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Create new empty log file
+# Creating new empty file log
 touch "$log_file"
 
 if [ $? -ne 0 ]; then
@@ -74,5 +74,3 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Successfully archived to $archive_file"
-echo ""
-
