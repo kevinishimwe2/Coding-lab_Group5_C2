@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Promting the user to select 
+# Prompting the user to select 
 echo "Select log file to analyze:"
 echo "1) Heart Rate (heart_rate_log.log)"
 echo "2) Temperature (temperature_log.log)"
@@ -45,7 +45,7 @@ if [ ! -s "$log_file" ]; then
 fi
 
 # Verify existence of reports folder 
-mkdir -p reports
+mkdir -p hospital_data/reports
 
 # Generate report
 report_file="reports/analysis_report.txt"
@@ -61,8 +61,8 @@ echo "========================================" >> "$report_file"
 if [ "$choice" == "3" ]; then
     # Water meter has only one device
     count=$(grep -c "$device_pattern" "$log_file")
-    first_entry=$(grep "$device_pattern" "$log_file" | head -1 | grep -oP '\[\K[^\]]+')
-    last_entry=$(grep "$device_pattern" "$log_file" | tail -1 | grep -oP '\[\K[^\]]+')
+    first_entry=$(grep "$device_pattern" "$log_file" | head -1 | awk '{print $1, $2}')
+    last_entry=$(grep "$device_pattern" "$log_file" | tail -1 | awk '{print $1, $2}')
     
     echo "" >> "$report_file"
     echo "Device: Water-Meter" >> "$report_file"
@@ -76,8 +76,8 @@ else
     for device_id in $devices; do
         device_name="${device_pattern}${device_id}"
         count=$(grep -c "$device_name" "$log_file")
-        first_entry=$(grep "$device_name" "$log_file" | head -1 | grep -oP '\[\K[^\]]+')
-        last_entry=$(grep "$device_name" "$log_file" | tail -1 | grep -oP '\[\K[^\]]+')
+        first_entry=$(grep "$device_name" "$log_file" | head -1 | awk '{print $1, $2}')
+        last_entry=$(grep "$device_name" "$log_file" | tail -1 |  awk '{print $1, $2}')
         
         echo "" >> "$report_file"
         echo "Device: $device_name" >> "$report_file"
