@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Promting the user to select 
+# Prompting the user to select 
 echo "Select log file to analyze:"
 echo "1) Heart Rate (heart_rate_log.log)"
 echo "2) Temperature (temperature_log.log)"
@@ -59,32 +59,32 @@ echo "========================================" >> "$report_file"
 # categorize by log type
 
 if [ "$choice" == "3" ]; then
-	# Water meter has only one device
-
-	count=$(grep -c "$device_pattern" "$log_file")
-	first_entry=$(grep "$device_pattern" "$log_file" | head -1 | awk '{print $1, $2}')
-    	last_entry=$(grep "$device_pattern" "$log_file" | tail -1 | awk '{print $1, $2}')
-	echo "" >> "$report_file"
-	echo "Device: Water-Meter" >> "$report_file"
-	echo "  Total entries: $count" >> "$report_file"
-	echo "  First entry: $first_entry" >> "$report_file"
-	echo "  Last entry: $last_entry" >> "$report_file"
+    # Water meter has only one device
+    count=$(grep -c "$device_pattern" "$log_file")
+    first_entry=$(grep "$device_pattern" "$log_file" | head -1 | awk '{print $1, $2}')
+    last_entry=$(grep "$device_pattern" "$log_file" | tail -1 | awk '{print $1, $2}')
+    
+    echo "" >> "$report_file"
+    echo "Device: Water-Meter" >> "$report_file"
+    echo "  Total entries: $count" >> "$report_file"
+    echo "  First entry: $first_entry" >> "$report_file"
+    echo "  Last entry: $last_entry" >> "$report_file"
 else
-	# Heart rate and temperature have multiple devices
-	devices=$(grep -oP "${device_pattern}\K[0-9]+" "$log_file" | sort -u)
-	for device_id in $devices; 
-	do
-		device_name="${device_pattern}${device_id}"
-		count=$(grep -c "$device_name" "$log_file")
-		first_entry=$(grep "$device_name" "$log_file" | head -1 | awk '{print $1, $2}')
-		last_entry=$(grep "$device_name" "$log_file" | tail -1 |  awk '{print $1, $2}')
-
-		echo "" >> "$report_file"
-		echo "Device: $device_name" >> "$report_file"
-		echo "  Total entries: $count" >> "$report_file"
-		echo "  First entry: $first_entry" >> "$report_file"
-		echo "  Last entry: $last_entry" >> "$report_file"
-	done
+    # Heart rate and temperature have multiple devices
+    devices=$(grep -oP "${device_pattern}\K[0-9]+" "$log_file" | sort -u)
+    
+    for device_id in $devices; do
+        device_name="${device_pattern}${device_id}"
+        count=$(grep -c "$device_name" "$log_file")
+        first_entry=$(grep "$device_name" "$log_file" | head -1 | awk '{print $1, $2}')
+        last_entry=$(grep "$device_name" "$log_file" | tail -1 |  awk '{print $1, $2}')
+        
+        echo "" >> "$report_file"
+        echo "Device: $device_name" >> "$report_file"
+        echo "  Total entries: $count" >> "$report_file"
+        echo "  First entry: $first_entry" >> "$report_file"
+        echo "  Last entry: $last_entry" >> "$report_file"
+    done
 fi
 
 echo "" >> "$report_file"
